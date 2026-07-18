@@ -338,9 +338,13 @@ Arisandi, R. R. R., Warsito, B., & Hakim, A. R. (2022). Aplikasi Naïve Bayes Cl
 pada klasifikasi status gizi balita stunting dengan pengujian K-Fold Cross Validation. *Jurnal
 Gaussian*, 11(1), 130–139. https://doi.org/10.14710/j.gauss.v11i1.33991
 
+Farhan, N. H., & Gunawansyah. (2024). Klasifikasi status gizi balita untuk deteksi dini stunting
+menggunakan metode K-Nearest Neighbor. *G-Tech: Jurnal Teknologi Terapan*, 8(4), 2777–2786.
+https://doi.org/10.70609/gtech.v8i4.5429
+
 Handayani, P., Fauzan, A. C., & Harliana, H. (2024). Machine learning klasifikasi status gizi
 balita menggunakan algoritma Random Forest. *KLIK: Kajian Ilmiah Informatika dan Komputer*,
-4(6), 3064–3072.
+4(6), 3064–3072. https://doi.org/10.30865/klik.v4i6.1909
 
 Lonang, S., & Normawati, D. (2022). Klasifikasi status stunting pada balita menggunakan
 K-Nearest Neighbor dengan Feature Selection Backward Elimination. *Jurnal Media Informatika
@@ -352,8 +356,6 @@ https://tunasbangsa.ac.id/ejurnal/index.php/jurasik/article/view/904
 
 Titimeidara, M. Y., & Hadikurniawati, W. (2021). *Implementasi metode Naive Bayes Classifier
 untuk klasifikasi status gizi stunting pada balita* [Laporan penelitian].
-
----
 
 ## 10. Lampiran (Opsional)
 
