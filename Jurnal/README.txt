@@ -1,0 +1,1 @@
+Letakkan seluruh file jurnal PDF yang digunakan pada laporan di folder ini.
