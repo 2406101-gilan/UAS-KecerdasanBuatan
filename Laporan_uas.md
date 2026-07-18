@@ -5,8 +5,8 @@
 **Prediksi Status Gizi Balita Menggunakan Algoritma K-Nearest Neighbor (KNN) dan Random Forest**
 
 **Nama Kelompok:**
-- Nama 1 — NIM
-- Nama 2 — NIM
+- Moch Zidane Bahtiar  — 2406073
+- M Gilan Algina — 2406101
 
 **Domain Proyek (Latar Belakang)**
 
@@ -64,12 +64,12 @@ dataset), diunggah melalui Google Colab.
 
 **Deskripsi fitur**
 
-| Fitur | Tipe | Keterangan |
-|---|---|---|
-| Umur (bulan) | Numerik (int) | Rentang valid 0–60 bulan |
-| Jenis Kelamin | Kategorik | `laki-laki` / `perempuan` |
-| Tinggi Badan (cm) | Numerik (float) | Rentang valid 30–150 cm |
-| Status Gizi (target) | Kategorik (4 kelas) | `normal`, `stunted`, `severely stunted`, `tinggi` |
+| Fitur                  | Tipe                 | Keterangan                                         |
+|:-----------------------|:---------------------|:----------------------------------------------------|
+| Umur (bulan)           | Numerik (int)         | Rentang valid 0–60 bulan                           |
+| Jenis Kelamin          | Kategorik             | `laki-laki` / `perempuan`                          |
+| Tinggi Badan (cm)      | Numerik (float)       | Rentang valid 30–150 cm                            |
+| Status Gizi (target)   | Kategorik (4 kelas)   | `normal`, `stunted`, `severely stunted`, `tinggi`   |
 
 **Ukuran dan format data**
 
@@ -180,7 +180,7 @@ Digunakan dua algoritma klasifikasi:
 - KNN: nilai K terbaik dipilih dari kandidat `[3, 5, 7, 9, 11, 15, 21]` menggunakan skema
   tuning (fit/validation split dari subset data latih), dievaluasi dengan F1-Score macro. Nilai
   **K=3** terpilih sebagai yang terbaik, lalu model final dilatih ulang pada seluruh data latih
-  (31.540 baris; waktu fit ±0,15 detik).
+  (31.540 baris; waktu fit ±0,12 detik).
 - Random Forest: `n_estimators=300`, `min_samples_leaf=2`, `class_weight='balanced'`,
   `random_state=42`, dilatih pada data latih yang sama.
 
@@ -202,16 +202,21 @@ rf_pipeline = Pipeline([
 
 **Perbandingan model**
 
-| Metrik | KNN (K=3) | Random Forest |
-|---|---|---|
-| Accuracy | 0,9916 | *(isi setelah run notebook)* |
-| Precision (Macro) | 0,9882 | *(isi setelah run notebook)* |
-| Recall (Macro) | 0,9883 | *(isi setelah run notebook)* |
-| F1-Score (Macro) | 0,9882 | *(isi setelah run notebook)* |
+| Metrik                  | KNN (K=3) | Random Forest | Selisih (RF − KNN) |
+|:------------------------|:---------:|:--------------:|:-------------------:|
+| Accuracy                |  0,9912   |     0,9909     |       −0,0004        |
+| Precision (Macro)       |  0,9883   |     0,9864     |       −0,0019        |
+| Recall (Macro)          |  0,9874   |     0,9874     |       −0,0001        |
+| F1-Score (Macro)        |  0,9879   |     0,9869     |       −0,0010        |
+| Waktu Fit (detik)       |   0,12    |      6,92      |          —           |
+| Waktu Prediksi (detik)  |   0,06    |      0,29      |          —           |
 
-> Nilai KNN diambil dari hasil eksekusi notebook. Nilai Random Forest perlu diisi setelah
-> `uas_model.ipynb` dijalankan penuh (sel perbandingan otomatis menghasilkan tabel dan grafik
-> bar chart perbandingan kedua model).
+> Seluruh nilai pada tabel di atas dihasilkan dari eksekusi penuh `uas_model.ipynb` (KNN dan
+> Random Forest dilatih pada `X_train`/`y_train` yang identik dan diuji pada `X_test`/`y_test`
+> yang sama, `random_state=42`), sehingga perbandingan kedua model bersifat adil (*fair
+> comparison*). Random Forest membutuhkan waktu *fit* jauh lebih lama (±6,92 detik) dibanding KNN
+> (±0,12 detik) karena harus membangun 300 pohon keputusan, namun keduanya sama-sama cepat pada
+> tahap prediksi.
 
 **Visualisasi model**
 
@@ -225,31 +230,61 @@ bar chart perbandingan metrik KNN vs Random Forest tersedia pada notebook `uas_m
 **Confusion matrix**
 
 Confusion matrix (absolut dan ternormalisasi) untuk kedua model divisualisasikan pada notebook.
-Untuk KNN, dari 7.885 data uji, model memprediksi **7.819 benar** dan **66 salah**.
+Dari 7.885 data uji:
+- **KNN (K=3)** memprediksi **7.816 benar** dan **69 salah**.
+- **Random Forest** memprediksi **7.813 benar** dan **72 salah**.
 
 **Metrik evaluasi (KNN, model utama)**
 
-| Kelas | Precision | Recall | F1-Score | Support |
-|---|---|---|---|---|
-| normal | 0,9953 | 0,9947 | 0,9950 | 4.303 |
-| severely stunted | 0,9908 | 0,9916 | 0,9912 | 1.304 |
-| stunted | 0,9750 | 0,9728 | 0,9739 | 883 |
-| tinggi | 0,9914 | 0,9943 | 0,9928 | 1.395 |
-| **Accuracy** | | | **0,9916** | 7.885 |
-| **Macro avg** | 0,9882 | 0,9883 | 0,9882 | 7.885 |
-| **Weighted avg** | 0,9916 | 0,9916 | 0,9916 | 7.885 |
+| Kelas                | Precision | Recall | F1-Score | Support |
+|:----------------------|:---------:|:------:|:--------:|--------:|
+| normal                |  0,9944   | 0,9951 |  0,9948  |   4.303 |
+| severely stunted      |  0,9900   | 0,9916 |  0,9908  |   1.304 |
+| stunted               |  0,9772   | 0,9717 |  0,9744  |     883 |
+| tinggi                |  0,9914   | 0,9914 |  0,9914  |   1.395 |
+| **Accuracy**          | **0,9912** | **0,9912** | **0,9912** |   7.885 |
+| **Macro avg**         |  0,9883   | 0,9874 |  0,9879  |   7.885 |
+| **Weighted avg**      |  0,9912   | 0,9912 |  0,9912  |   7.885 |
+
+> *Catatan: pada klasifikasi multi-kelas single-label (setiap balita hanya memiliki satu label
+> aktual), precision dan recall rata-rata mikro (micro-average) secara matematis selalu sama
+> dengan accuracy, sehingga baris Accuracy di atas diisi dengan nilai yang identik pada ketiga
+> kolom.*
+
+**Metrik evaluasi (Random Forest, model pembanding)**
+
+| Kelas                | Precision | Recall | F1-Score | Support |
+|:----------------------|:---------:|:------:|:--------:|--------:|
+| normal                |  0,9958   | 0,9942 |  0,9950  |   4.303 |
+| severely stunted      |  0,9870   | 0,9908 |  0,9889  |   1.304 |
+| stunted               |  0,9706   | 0,9717 |  0,9711  |     883 |
+| tinggi                |  0,9921   | 0,9928 |  0,9925  |   1.395 |
+| **Accuracy**          | **0,9909** | **0,9909** | **0,9909** |   7.885 |
+| **Macro avg**         |  0,9864   | 0,9874 |  0,9869  |   7.885 |
+| **Weighted avg**      |  0,9909   | 0,9909 |  0,9909  |   7.885 |
 
 **Penjelasan kinerja model**
 
-KNN dengan K=3 memberikan performa sangat tinggi (accuracy 99,16%, F1-Macro 98,82%) pada data
-uji, dengan kelas `stunted` sedikit lebih rendah (F1 97,39%) karena jumlah datanya paling
-sedikit (support 883) — konsisten dengan kondisi *imbalanced class* yang teridentifikasi saat
-EDA. Random Forest sebagai pembanding perlu dijalankan untuk memperoleh angka final, namun
-berdasarkan pola pada literatur sejenis, Random Forest umumnya kompetitif atau sedikit di bawah
-KNN pada data dengan struktur fitur numerik sederhana dan pola kedekatan jarak yang kuat seperti
-kasus ini (Panigoro, 2024). **Model terbaik ditentukan berdasarkan F1-Score macro tertinggi**
-pada data uji setelah kedua model dijalankan — isi kesimpulan akhir setelah angka Random Forest
-tersedia dari notebook.
+Kedua model memberikan performa yang sangat tinggi dan hampir setara pada data uji. **KNN
+(K=3)** mencatat accuracy 99,12% dan F1-Score macro 98,79%, sementara **Random Forest** mencatat
+accuracy 99,09% dan F1-Score macro 98,69% — selisih keduanya sangat tipis (F1-Macro berbeda
+0,0010, atau sekitar 0,1 poin persentase). Pada kedua model, kelas `stunted` konsisten menjadi
+kelas dengan F1-Score terendah (KNN 97,44%; Random Forest 97,11%) karena jumlah datanya paling
+sedikit (support 883 dari 7.885, atau 11,2%) — sejalan dengan kondisi *imbalanced class* yang
+teridentifikasi saat EDA. Menariknya, Random Forest justru sedikit lebih unggul pada kelas
+`severely stunted` dan `tinggi`, sementara KNN lebih unggul pada kelas `normal` dan `stunted`,
+menunjukkan kedua algoritma memiliki karakteristik kesalahan klasifikasi yang sedikit berbeda
+meski keduanya memakai pipeline preprocessing yang identik.
+
+**Model terbaik ditentukan berdasarkan F1-Score macro tertinggi** pada data uji: **KNN (K=3)**
+terpilih sebagai model utama karena F1-Score macro-nya (0,9879) sedikit lebih tinggi dibanding
+Random Forest (0,9869), sekaligus memiliki waktu *fit* jauh lebih singkat (0,12 detik vs 6,92
+detik). Hasil ini konsisten dengan temuan Lonang & Normawati (2022) bahwa KNN efektif pada data
+dengan pola kedekatan geometris yang jelas seperti hubungan umur–tinggi badan terhadap status
+gizi, meskipun literatur lain (Panigoro, 2024) melaporkan Random Forest umumnya lebih stabil
+pada kasus klasifikasi stunting secara umum — perbedaan ini kemungkinan dipengaruhi oleh
+karakteristik dataset (jumlah fitur yang sedikit dan hubungan fitur-target yang sangat
+terstruktur) yang menguntungkan pendekatan berbasis jarak.
 
 ---
 
@@ -257,16 +292,19 @@ tersedia dari notebook.
 
 **Ringkasan hasil modeling dan evaluasi**
 
-Model KNN (K=3) berhasil mengklasifikasikan status gizi balita dengan akurasi 99,16% dan
-F1-Score macro 98,82% pada data uji, menunjukkan performa yang sangat baik untuk kasus
-klasifikasi multikelas ini. Random Forest ditambahkan sebagai pembanding dengan pipeline
-preprocessing yang identik untuk memastikan perbandingan yang adil.
+Model **KNN (K=3)** berhasil mengklasifikasikan status gizi balita dengan accuracy **99,12%**
+dan F1-Score macro **98,79%** pada data uji, menunjukkan performa yang sangat baik untuk kasus
+klasifikasi multikelas ini. Sebagai pembanding, **Random Forest** (dengan pipeline preprocessing
+identik) mencatat accuracy **99,09%** dan F1-Score macro **98,69%** — hanya berselisih tipis
+0,10 poin dari KNN. Berdasarkan F1-Score macro tertinggi, **KNN (K=3) ditetapkan sebagai model
+terbaik**, unggul tipis dari Random Forest sekaligus jauh lebih efisien dari sisi waktu
+pelatihan (0,12 detik vs 6,92 detik).
 
 **Apakah tujuan proyek tercapai?**
 
 Ya. Model klasifikasi status gizi balita berhasil dibangun, dievaluasi, dan disimpan dalam
 bentuk pipeline siap pakai (`joblib`) yang dapat digunakan untuk inference data baru, serta
-telah dibandingkan dengan model kedua sesuai kebutuhan tugas.
+telah dibandingkan secara adil dengan Random Forest sebagai model kedua sesuai kebutuhan tugas.
 
 **Kelebihan dan keterbatasan model**
 
